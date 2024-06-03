@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @db.VarChar(255)
+  users     UserOnCompany[]
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @db.Timestamp(6)
+}
+
+model User {
+  id            String          @id @default(uuid()) @db.Uuid
+  name          String          @db.VarChar(255)
+  email         String          @unique @db.VarChar(255)
+  cpf           String          @unique @db.VarChar(11)
+  password      String          @db.VarChar(255)
+  role          String          @db.VarChar(255)
+  isActive      Boolean         @default(true)
+  companies     UserOnCompany[]
+  createdAt     DateTime        @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime        @updatedAt @db.Timestamp(6)
+  tokens        Token[]
+}
+
+model UserOnCompany {
+  userId      String   @db.Uuid
+  companyId   String   @db.Uuid
+  assignedAt  DateTime @default(now()) @db.Timestamp(6)
+
+  user        User     @relation(fields: [userId], references: [id])
+  company     Company  @relation(fields: [companyId], references: [id])
+
+  @@id([userId, companyId])
+}
+
+model Token {
+  id          String   @id @default(uuid()) @db.Uuid
+  token       String   @db.Text
+  userId      String   @db.Uuid
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  expiresAt   DateTime @db.Timestamp(6)
+
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
