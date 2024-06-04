@@ -41,7 +41,7 @@ class AuthController {
       });
     }
 
-    const companies = user.companies.map((userCompany) => ({
+    const companies = user.companies.map((userCompany: any) => ({
       id: userCompany.company.id,
       name: userCompany.company.name,
     }));
@@ -120,7 +120,7 @@ class AuthController {
         });
       }
 
-      const companies = tokenRecord.user.companies.map((userCompany) => ({
+      const companies = tokenRecord.user.companies.map((userCompany: any) => ({
         id: userCompany.company.id,
         name: userCompany.company.name,
       }));
