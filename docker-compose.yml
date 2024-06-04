@@ -24,7 +24,11 @@ services:
       - .env
     depends_on:
       - db
-    command: sh -c "chown -R node:node /usr/src/app && npm install && npx prisma generate && npm run dev"
+    command: >
+      sh -c "
+      npx prisma migrate dev --schema=./prisma/schema.prisma &&
+      npm run dev
+      "
 
 volumes:
   polls_pg_data:

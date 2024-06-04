@@ -18,7 +18,7 @@ const start = async () => {
   try {
     await fastify.listen({ 
       port: parseInt(process.env.PORT as string, 10) || 3000, 
-      host: process.env.HOST || 'localhost'
+      host: '0.0.0.0' // Alterar para '0.0.0.0' para escutar em todas as interfaces
     });
     console.log(`Server is running on http://localhost:${process.env.PORT || 3000}`);
   } catch (err) {
